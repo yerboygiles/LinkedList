@@ -41,7 +41,7 @@ void Node::display()
 {
 	switch (m_type) {
 	case BOOL:
-		cout << *static_cast<bool*>(m_data) << endl;
+		cout << std::boolalpha <<*static_cast<bool*>(m_data) << endl;
 		break;
 	case CHAR:
 		cout << *static_cast<char*>(m_data) << endl;
@@ -56,5 +56,4 @@ void Node::display()
 		cout << *static_cast<string*>(m_data) << endl;
 		break;
 	}
-	cout << "Data: " << m_data << endl;
 }

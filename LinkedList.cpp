@@ -19,7 +19,7 @@ void LinkedList::insertNode(insertMode mode, void* data, dataType type)
 {
 	Node* travel;
 	if (mode == APPEND) {
-		Node* new_node = new Node(data);
+		Node* new_node = new Node(data, type);
 		if (m_head == nullptr) {
 			m_head = new_node;
 		}
@@ -32,7 +32,7 @@ void LinkedList::insertNode(insertMode mode, void* data, dataType type)
 		}
 	}
 	if (mode == PREPEND) {
-		Node* new_node = new Node(data);
+		Node* new_node = new Node(data, type);
 		if (m_head == nullptr) {
 			m_head = new_node;
 		}
@@ -102,13 +102,12 @@ void LinkedList::serialize(char filename[])
 		travel = m_head;
 		//write type
 		for (int i = 0; travel != nullptr; i++) {
-			fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(travel));
+			fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(travel->getType));
 			fout.write(reinterpret_cast<char*>(travel->getData()), sizeof(travel->getData()));
 			travel = travel->getNext();
 		}
 	}
 	fout.close();
-
 }
 
 void LinkedList::deserialize(char filename[])
@@ -120,21 +119,9 @@ void LinkedList::deserialize(char filename[])
 	ifstream fin(filename, ios::binary);
 	travel = m_head;
 	while (!fin.eof()) {
-		fin.read(reinterpret_cast<char*>(type), sizeof(type));
-		switch (type) {
-		case BOOL:
-			break;
-		case CHAR:
-			break;
-		case INT:
-			break;
-		case FLOAT:
-			break;
-		case STRING:
-			break;
-		}
-		fin.read(reinterpret_cast<char*>(data), sizeof(data));
-		new_node = new Node();
+		fin.read(reinterpret_cast<char*>(&type), sizeof(type));
+		fin.read(reinterpret_cast<char*>(&data), sizeof(data));
+		new_node = new Node(data,type);
 		travel = m_head;
 		while (travel->getNext() != nullptr) {
 			travel = travel->getNext();
