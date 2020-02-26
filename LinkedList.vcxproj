@@ -146,6 +146,9 @@
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fileout.bin" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

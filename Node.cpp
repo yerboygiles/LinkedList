@@ -4,11 +4,12 @@ Node::Node()
 {
 	setData(0);
 	setNext(nullptr);
-	setType(VOID);
 }
 Node::~Node()
 {}
-Node::Node(void * data,dataType type) :m_data(data),m_next(nullptr),m_type(type)
+Node::Node(void * data) :
+	m_data(data),
+	m_next(nullptr)
 {}
 
 void Node::setData(void * data)
@@ -21,11 +22,6 @@ void Node::setNext(Node * next)
 	m_next = next;
 }
 
-void Node::setType(dataType type)
-{
-	m_type = type;
-}
-
 void * Node::getData() {
 	return m_data;
 }
@@ -33,13 +29,10 @@ void * Node::getData() {
 Node * Node::getNext() {
 	return m_next;
 }
-dataType Node::getType() {
-	return m_type;
-}
 
-void Node::display()
+void Node::display(dataType type)
 {
-	switch (m_type) {
+	switch (type) {
 	case BOOL:
 		cout << std::boolalpha <<*static_cast<bool*>(m_data) << endl;
 		break;
