@@ -11,6 +11,7 @@ enum insertMode{APPEND,PREPEND};
 class LinkedList
 {
 public:
+	LinkedList();
 	LinkedList(dataType type);
 	~LinkedList();
 	void insertNode(insertMode mode, void * data);

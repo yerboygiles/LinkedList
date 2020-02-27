@@ -1,9 +1,18 @@
 #include "LinkedList.h"
-
-LinkedList::LinkedList(dataType type) : 
+/*
+Default type of the linked list is bool
+*/
+LinkedList::LinkedList() : 
 	m_head (nullptr),
 	m_ordered(false), 
-	m_type(type)
+	m_type(BOOL)
+{
+
+}
+LinkedList::LinkedList(dataType type) :
+	m_head(nullptr),
+	m_ordered(false),
+	m_type(BOOL)
 {
 
 }
@@ -51,6 +60,7 @@ void LinkedList::deleteNode(void * datasearch)
 {
 	Node* trail;
 	Node* travel;
+
 	if (m_head == nullptr) {
 		cout << "empty list" << endl;
 	}

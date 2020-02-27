@@ -141,10 +141,12 @@
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="VariedLinkedList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="VariedLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fileout.bin" />
