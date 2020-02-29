@@ -3,18 +3,30 @@
 
 
 int main() {
-	LinkedList floatlist = LinkedList();
+	LinkedList floatlist = LinkedList(INT);
 	char file[12] = "fileout.bin";
-	string var1 = "this is a string";
-	float var2 = 4.5f;
-	int var3 = 69;
-	char var4 = 'F';
-	bool var5 = false;
+	int var1 = 4;
+	int var2 = 6;
+	int var3 = 4;
+	int var4 = 3;
+	int var5 = 69;
+	int var6 = 1;
+	int var7 = -1;
+	floatlist.insertNode(APPEND, &var1);
+	floatlist.display();
 	floatlist.insertNode(APPEND, &var2);
 	floatlist.display();
-	floatlist.insertNode(PREPEND, &var3);
+	floatlist.insertNode(APPEND, &var3);
 	floatlist.display();
 	floatlist.insertNode(APPEND, &var4);
+	floatlist.display();
+	floatlist.insertNode(APPEND, &var5);
+	floatlist.display();
+	floatlist.insertNode(APPEND, &var6);
+	floatlist.display();
+	floatlist.insertNode(APPEND, &var7);
+	floatlist.display();
+	floatlist.orderList();
 	floatlist.display();
 	floatlist.~LinkedList();
 	return 0;

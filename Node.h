@@ -7,7 +7,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-enum dataType { BOOL, CHAR, INT, FLOAT, STRING, VOID };
+enum dataType {CHARSTR, INT, DEFAULT};
 
 
 class Node
@@ -15,6 +15,7 @@ class Node
 public:
 	Node();
 	Node(void * data);
+	Node(void* data, dataType type);
 	~Node();
 	void setData(void * data);
 	void setNext(Node* next);

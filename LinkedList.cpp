@@ -5,16 +5,15 @@ Default type of the linked list is bool
 LinkedList::LinkedList() : 
 	m_head (nullptr),
 	m_ordered(false), 
-	m_type(BOOL)
+	m_type(DEFAULT)
 {
-
 }
+
 LinkedList::LinkedList(dataType type) :
 	m_head(nullptr),
 	m_ordered(false),
-	m_type(BOOL)
+	m_type(type)
 {
-
 }
 
 LinkedList::~LinkedList()
@@ -32,7 +31,7 @@ void LinkedList::insertNode(insertMode mode, void* data)
 	m_ordered = false;
 	Node* travel;
 	if (mode == APPEND) {
-		Node* new_node = new Node(data);
+		Node* new_node = new Node(data,m_type);
 		if (m_head == nullptr) {
 			m_head = new_node;
 		}
@@ -45,7 +44,7 @@ void LinkedList::insertNode(insertMode mode, void* data)
 		}
 	}
 	if (mode == PREPEND) {
-		Node* new_node = new Node(data);
+		Node* new_node = new Node(data,m_type);
 		if (m_head == nullptr) {
 			m_head = new_node;
 		}
@@ -104,29 +103,46 @@ void LinkedList::display()
 	}
 	cout << endl;
 }
+
 void LinkedList::orderList() {
 	Node* travel;
+	Node* swap1;
+	Node* swap2;
 	Node* trail;
-	Node* back;
-	Node* front;
-	bool changed = false;
-	while (!m_ordered) {
-		if (m_head==nullptr || m_head->getNext() == nullptr) {
-			m_ordered = true;
-			break;
-		}
-		else {
-			trail = m_head;
-			travel = m_head->getNext();
+	bool found = true;
+	if (m_head != nullptr) {
+		trail = nullptr;
+		travel = m_head;
+		while (!m_ordered) {
+			found = false;
 			while (travel->getNext() != nullptr) {
-				trail = travel;
-				travel = travel->getNext();
-
+				switch (m_type) {
+				case INT:
+					if (compareInt(travel->getData(), travel->getNext()->getData())>0) {
+						found = true;
+						swap1 = travel; swap2 = travel->getNext();
+						swap2->setNext(swap1);
+						swap1->setNext(swap2);
+					}
+					break;
+				case CHARSTR:
+					if (compareCharStr(travel->getData(), travel->getNext()->getData())>0) {
+						found = true;
+						swap1 = travel; swap2 = travel->getNext();
+						swap2->setNext(swap1);
+						swap1->setNext(swap2);
+					}
+					break;
+				}
+				travel = travel->getNext()->getNext();
+			}
+			if (!found) {
+				m_ordered = true;
 			}
 		}
 	}
 }
-/*
+
 void LinkedList::serialize(char filename[])
 {
 	ofstream fout(filename, ios::out, ios::binary);
@@ -139,20 +155,11 @@ void LinkedList::serialize(char filename[])
 		//write type
 		for (int i = 0; travel != nullptr; i++) {
 			switch (travel->getType()) {
-			case BOOL:
-				fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(bool));
-				break;
-			case CHAR:
-				fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(char));
+			case CHARSTR:
+				fout.write(reinterpret_cast<char*>(travel->getData()), sizeof(travel->getData()));
 				break;
 			case INT:
 				fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(int));
-				break;
-			case FLOAT:
-				fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(float));
-				break;
-			case STRING:
-				fout.write(reinterpret_cast<char*>(travel->getType()), sizeof(string));
 				break;
 			}
 			fout.write(reinterpret_cast<char*>(travel->getData()), sizeof(travel->getData()));
@@ -173,7 +180,7 @@ void LinkedList::deserialize(char filename[])
 	while (!fin.eof()) {
 		fin.read(reinterpret_cast<char*>(&type), sizeof(type));
 		fin.read(reinterpret_cast<char*>(&data), sizeof(data));
-		new_node = new Node(data, type);
+		new_node = new Node(data);
 		travel = m_head;
 		while (travel->getNext() != nullptr) {
 			travel = travel->getNext();
@@ -182,4 +189,12 @@ void LinkedList::deserialize(char filename[])
 	}
 	fin.close();
 }
-*/
+
+int LinkedList::compareInt(const void* arg1, const void* arg2)
+{
+	return (*(int*)arg1 > * (int*)arg2);
+}
+int LinkedList::compareCharStr(const void* arg1, const void* arg2)
+{
+	return (_stricmp((char*)arg1, (char*)arg2));
+}

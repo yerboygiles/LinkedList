@@ -18,12 +18,12 @@ public:
 	void deleteNode(void * datasearch);
 	void display();
 	void orderList();
-	/*
 	void serialize(char filename[]);
 	void deserialize(char filename[]);
-	*/
 
 private:
+	int compareInt(const void* arg1, const void* arg2);
+	int compareCharStr(const void* arg1, const void* arg2);
 	bool m_ordered;
 	dataType m_type;
     Node* m_head;
