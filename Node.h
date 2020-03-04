@@ -15,18 +15,16 @@ class Node
 public:
 	Node();
 	Node(void * data);
-	Node(void* data, dataType type);
+	Node(void* data, void(*displayFunc)(void* v));
 	~Node();
 	void setData(void * data);
 	void setNext(Node* next);
-	void setType(dataType type);
 	void * getData();
 	Node * getNext();
-	dataType getType();
 	void display();
-	void display(dataType type);
+	char* toString();
 private:
+	void (*m_DisplayFunc)(void* v);
 	Node * m_next;
 	void * m_data;
-	dataType m_type;
 };

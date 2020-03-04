@@ -12,20 +12,22 @@ class LinkedList
 {
 public:
 	LinkedList();
-	LinkedList(dataType type);
+	LinkedList(void(*displayFunc)(void* v));
 	~LinkedList();
-	void insertNode(insertMode mode, void * data);
+	void insertNode(insertMode mode, void* data);
 	void deleteNode(void * datasearch);
 	void display();
 	void orderList();
-	void serialize(char filename[]);
-	void deserialize(char filename[]);
+	void serializeInts(char filename[]);
+	void serializeStrs(char filename[]);
+	void deserializeInts(char filename[]);
+	void deserializeStrs(char filename[]);
 
 private:
 	int compareInt(const void* arg1, const void* arg2);
 	int compareCharStr(const void* arg1, const void* arg2);
 	bool m_ordered;
-	dataType m_type;
+	void (*m_displayfunc)(void* v);
     Node* m_head;
 };
 
