@@ -1,18 +1,23 @@
 #include <iostream>
 #include "LinkedList.h"
 
-void serialize();
+void makestr();
+void makeint();
 void deserialize();
 char file[12] = "fileout.bin";
 void displayInt(void* i);
 void displayStr(void* i);
-LinkedList intlist = LinkedList(*displayInt);
+int compareInt(void* v, void* x);
+int compareStr(void* v, void* x);
+LinkedList intlist = LinkedList(*displayInt,*compareInt);
+LinkedList strlist = LinkedList(*displayStr, *compareStr);
 int main() {
-	deserialize();
+	makestr();
 	intlist.~LinkedList();
+	strlist.~LinkedList();
 	return 0;
 }
-void serialize() {
+void makeint() {
 	int var1 = 4;
 	int var2 = 6;
 	int var3 = 4;
@@ -34,7 +39,33 @@ void serialize() {
 	intlist.display();
 	intlist.insertNode(APPEND, &var7);
 	intlist.display();
-	intlist.serializeInts(file);
+	intlist.orderList();
+	intlist.display();
+}
+void makestr() {
+	char var1[] = "jacob";
+	char var2[] = "tyler";
+	char var3[] = "fortnite";
+	char var4[] = "vegetable";
+	char var5[] = "lol";
+	char var6[] = "what";
+	char var7[] = "cringe ass nae nae baby";
+	strlist.insertNode(APPEND, &var1);
+	strlist.display();
+	strlist.insertNode(APPEND, &var2);
+	strlist.display();
+	strlist.insertNode(APPEND, &var3);
+	strlist.display();
+	strlist.insertNode(APPEND, &var4);
+	strlist.display();
+	strlist.insertNode(APPEND, &var5);
+	strlist.display();
+	strlist.insertNode(APPEND, &var6);
+	strlist.display();
+	strlist.insertNode(APPEND, &var7);
+	strlist.display();
+	strlist.orderList();
+	strlist.display();
 }
 void deserialize() {
 	intlist.deserializeInts(file);
@@ -48,4 +79,12 @@ void displayInt(void* i) {
 void displayStr(void* i) {
 	char* p = (char*)(i);
 	cout << p << endl;
+}
+int compareInt(void* v, void* x)
+{
+	return (*(int*)v > * (int*)x);
+}
+int compareStr(void* v, void* x)
+{
+	return (_stricmp((char*)v, (char*)x))>0;
 }

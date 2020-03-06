@@ -8,10 +8,12 @@ LinkedList::LinkedList() :
 {
 }
 
-LinkedList::LinkedList(void(*displayFunc)(void* v)) :
+
+LinkedList::LinkedList(void(*displayFunc)(void* v), int(*compareFunc)(void* v,void * x)) :
 	m_head(nullptr),
 	m_ordered(false),
-	m_displayfunc(displayFunc)
+	m_displayfunc(displayFunc),
+	m_comparefunc(compareFunc)
 {
 }
 
@@ -104,25 +106,42 @@ void LinkedList::display()
 }
 
 void LinkedList::orderList() {
-	Node* trailtrail;
-	Node* trail;
-	Node* travel;
-	int compare;
+	Node* trailtrail{};
+	Node* trail{};
+	Node* travel{};
 	bool found = true;
 	m_ordered = false;
 	while (!m_ordered) {
+		trailtrail = nullptr;
 		trail = m_head;
 		travel = m_head->getNext();
+		found = false;
 		while (travel != nullptr) {
-			if (compareInt(trail->getData(), travel->getData())) {
+			if (m_comparefunc(trail->getData(), travel->getData())) {
+				found = true;
 				if (trail == m_head) {
 					m_head = travel;
 					trail->setNext(travel->getNext());
+					m_head->setNext(trail);
 				}
 				else {
-
+					trailtrail->setNext(travel);
+					trail->setNext(travel->getNext());
+					travel->setNext(trail);
 				}
+				trailtrail = travel;
+				trail = travel;
+				travel = trail->getNext();
 			}
+			else {
+				trailtrail = trail;
+				trail = travel;
+				travel = travel->getNext();
+
+			}
+		}
+		if (!found) {
+			m_ordered = true;
 		}
 	}
 }
@@ -143,6 +162,10 @@ void LinkedList::serializeInts(char filename[])
 		}
 	}
 	fout.close();
+}
+
+void LinkedList::serializeStrs(char filename[])
+{
 }
 
 void LinkedList::deserializeInts(char filename[])
@@ -171,11 +194,6 @@ void LinkedList::deserializeInts(char filename[])
 	fin.close();
 }
 
-int LinkedList::compareInt(const void* arg1, const void* arg2)
+void LinkedList::deserializeStrs(char filename[])
 {
-	return (*(int*)arg1 > * (int*)arg2);
-}
-int LinkedList::compareCharStr(const void* arg1, const void* arg2)
-{
-	return (_stricmp((char*)arg1, (char*)arg2));
 }

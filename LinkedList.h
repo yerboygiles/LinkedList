@@ -12,7 +12,7 @@ class LinkedList
 {
 public:
 	LinkedList();
-	LinkedList(void(*displayFunc)(void* v));
+	LinkedList(void(*displayFunc)(void* v), int(*compareFunc)(void* v,void* x));
 	~LinkedList();
 	void insertNode(insertMode mode, void* data);
 	void deleteNode(void * datasearch);
@@ -28,6 +28,7 @@ private:
 	int compareCharStr(const void* arg1, const void* arg2);
 	bool m_ordered;
 	void (*m_displayfunc)(void* v);
+	int (*m_comparefunc)(void* v,void* x);
     Node* m_head;
 };
 
