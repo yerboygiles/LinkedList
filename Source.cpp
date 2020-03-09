@@ -3,7 +3,8 @@
 
 void makestr();
 void makeint();
-void deserialize();
+void deserializeint();
+void deserializestr();
 char file[12] = "fileout.bin";
 void displayInt(void* i);
 void displayStr(void* i);
@@ -12,7 +13,7 @@ int compareStr(void* v, void* x);
 LinkedList intlist = LinkedList(*displayInt,*compareInt);
 LinkedList strlist = LinkedList(*displayStr, *compareStr);
 int main() {
-	makestr();
+	deserializestr();
 	intlist.~LinkedList();
 	strlist.~LinkedList();
 	return 0;
@@ -41,6 +42,7 @@ void makeint() {
 	intlist.display();
 	intlist.orderList();
 	intlist.display();
+	intlist.serializeInts(file);
 }
 void makestr() {
 	char var1[] = "jacob";
@@ -66,10 +68,15 @@ void makestr() {
 	strlist.display();
 	strlist.orderList();
 	strlist.display();
+	strlist.serializeStrs(file);
 }
-void deserialize() {
+void deserializeint() {
 	intlist.deserializeInts(file);
 	intlist.display();
+}
+void deserializestr() {
+	strlist.deserializeStrs(file);
+	strlist.display();
 }
 void displayInt(void* i) {
 	int* p = (int*)(i);

@@ -166,6 +166,24 @@ void LinkedList::serializeInts(char filename[])
 
 void LinkedList::serializeStrs(char filename[])
 {
+	ofstream fout(filename, ios::out, ios::binary);
+	Node* travel;
+	if (m_head == nullptr) {
+		cout << "linked list is empty." << endl;
+	}
+	else {
+		travel = m_head;
+		//write type
+		while (travel != nullptr) {
+			char* p = (char*)(travel->getData());
+			int len = strlen(p);
+			int* n = &len;
+			fout.write(reinterpret_cast<char*>(n), sizeof(int));
+			fout.write(p, sizeof(p));
+			travel = travel->getNext();
+		}
+	}
+	fout.close();
 }
 
 void LinkedList::deserializeInts(char filename[])
@@ -196,4 +214,32 @@ void LinkedList::deserializeInts(char filename[])
 
 void LinkedList::deserializeStrs(char filename[])
 {
+	Node* travel;
+	void* data = new char;
+	void* len = new int;
+	ifstream fin(filename, ios::binary);
+	travel = m_head;
+	while (!fin.eof()) {
+		fin.read(reinterpret_cast<char*>(len), sizeof(int));
+		int* lenp = (int*)(len);
+		int lenn = *lenp;
+		if (lenn > -300000) {
+			void* data = new char[lenn];
+			fin.read(reinterpret_cast<char*>(data), sizeof(char*));
+			char* datastr = (char*)(data);
+			if (m_head == nullptr) {
+				travel = new Node(data, m_displayfunc);
+				m_head = travel;
+			}
+			else {
+				travel->setNext(new Node(data, m_displayfunc));
+				travel = travel->getNext();
+			}
+		}
+		data = new int;
+		len = new int;
+	}
+	delete data;
+	delete len;
+	fin.close();
 }
