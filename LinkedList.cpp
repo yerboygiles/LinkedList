@@ -179,7 +179,7 @@ void LinkedList::serializeStrs(char filename[])
 			int len = strlen(p);
 			int* n = &len;
 			fout.write(reinterpret_cast<char*>(n), sizeof(int));
-			fout.write(p, sizeof(p));
+			fout.write(reinterpret_cast<char*>(p), len);
 			travel = travel->getNext();
 		}
 	}
@@ -223,17 +223,20 @@ void LinkedList::deserializeStrs(char filename[])
 		fin.read(reinterpret_cast<char*>(len), sizeof(int));
 		int* lenp = (int*)(len);
 		int lenn = *lenp;
-		if (lenn > -300000) {
-			void* data = new char[lenn];
-			fin.read(reinterpret_cast<char*>(data), sizeof(char*));
-			char* datastr = (char*)(data);
-			if (m_head == nullptr) {
-				travel = new Node(data, m_displayfunc);
-				m_head = travel;
-			}
-			else {
-				travel->setNext(new Node(data, m_displayfunc));
-				travel = travel->getNext();
+		if (!fin.fail()) {
+			if (!(lenn < 0)&&(lenn<100000)) {
+				void* data = new char[lenn+1];
+				fin.read(reinterpret_cast<char*>(data), lenn);
+				((char*)data)[lenn] = '\0';
+				char* datastr = (char*)(data);
+				if (m_head == nullptr) {
+					travel = new Node(data, m_displayfunc);
+					m_head = travel;
+				}
+				else {
+					travel->setNext(new Node(data, m_displayfunc));
+					travel = travel->getNext();
+				}
 			}
 		}
 		data = new int;
